@@ -658,7 +658,7 @@ SnapTranslator.dict.de = {
     'Save':
         'Sichern',
     'Save to disk':
-        'Abpeichern',
+        'Abspeichern',
     'store this project\nin the downloads folder\n(in supporting browsers)':
         'dieses Projekt herunterladen\nund lokal speichern\n'
             + '(nicht von allen Browsern unters\u00fctzt)',

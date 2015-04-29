@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Morphic!</title>
+        <link rel="shortcut icon" href="favicon.ico">
+		<script type="text/javascript" src="morphic.js"></script>
+		<script type="text/javascript" src="blocks.js"></script>
+		<script type="text/javascript" src="widgets.js"></script>
+		<script type="text/javascript" src="threads.js"></script>
+		<script type="text/javascript" src="objects.js"></script>
+		<script type="text/javascript" src="gui.js"></script>
+		<script type="text/javascript" src="paint.js"></script>
+		<script type="text/javascript" src="lists.js"></script>
+		<script type="text/javascript" src="xml.js"></script>
+		<script type="text/javascript" src="locale.js"></script>
+		<script type="text/javascript" src="cloud.js"></script>
+		<script type="text/javascript" src="sha512.js"></script>
+            <script type="text/javascript">
+                var world;
+
+                window.onload = function () {
+                    worldCanvas = new WorldMorph(
+                        document.getElementById('world'));
+                // That's how we initialize a dialog
+                var dialog = new DialogBoxMorph().withKey('dialogKey'),
+                frame = new ScrollFrameMorph(),
+                text = new TextMorph('Test Dialog'),
+                ok = dialog.ok,
+                myself = this,
+                size = 550,
+                world = worldCanvas;
+
+                //add dialog to our world (or another Morph)
+                    worldCanvas.add(dialog);
+
+                var add_buttons = true;
+
+                // we can either add futher elements to the dialog....
+                if (add_buttons) {
+                  var txt = new TextMorph(
+                          'test',
+                          10,
+                          dialog.fontStyle,
+                          true,
+                          false,
+                          'center',
+                          null,
+                          null,
+                          null,
+                          new Color(255, 255, 255)
+                      );
+
+                      dialog.labelString = 'blubb';
+                      dialog.createLabel();
+                      dialog.addBody(txt);
+                      dialog.addButton('ok', 'Yes');
+                      //dialog.addButton('cancel', 'No');
+                      //dialog.fixLayout();
+                      dialog.drawNew();
+                      dialog.fixLayout();
+                      dialog.popUp(worldCanvas);
+                  } else {
+                    // or let morphic do that using the prompt() function
+                    // (probably better)
+                    // args: Name of Dialog, Standard text in Textfield, canvas, ....
+                    // see widgets.js
+                          dialog.prompt("Test", "Blubb", worldCanvas, null, null, null, null, 0, 4);
+                    }
+                    setInterval(loop, 50);
+
+                };
+
+                function loop() {
+                    worldCanvas.doOneCycle();
+                }
+
+            </script>
+        </head>
+        <body>
+            <canvas id="world" tabindex="1" width="800" height="600">
+                <p>Your browser doesn't support canvas.</p>
+            </canvas>
+        </body>
+    </html>

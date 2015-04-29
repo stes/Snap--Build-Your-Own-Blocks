@@ -81,6 +81,8 @@ var TurtleIconMorph;
 var WardrobeMorph;
 var SoundIconMorph;
 var JukeboxMorph;
+//Worked here 
+var Sichtbarkeit;
 
 // IDE_Morph ///////////////////////////////////////////////////////////
 
@@ -2166,6 +2168,10 @@ IDE_Morph.prototype.settingsMenu = function () {
         'Stage size...',
         'userSetStageSize'
     );
+	
+	//Worked here
+	menu.addItem("Sichtbarkeit", "blub");
+	
     menu.addLine();
     addPreference(
         'Blurred shadows',
@@ -3757,6 +3763,50 @@ IDE_Morph.prototype.setStageExtent = function (aPoint) {
         this.setExtent(world.extent());
     }
 };
+
+//Worked here Sichtbarkeit
+//IDE_Morph stage Sichtbarkeit
+
+IDE_Morph.prototype.blub = function () {
+ 	//worldCanvas = new WorldMorph(document.getElementById('world'));
+	
+	var dialog = new DialogBoxMorph().withKey('dialogKey'),
+		//frame = new ScrollFrameMorph(),
+		//text = new TextMorph('Test Dialog'),
+        //ok = dialog.ok,
+        //myself = this,
+        //size = 550,
+        world = this.world();
+	
+	//add dialog to our world (or another Morph)
+	world.add(dialog);
+	
+	var txt = new TextMorph(
+		'wählen Sie das Sichtbarkeitslevel aus ',
+		10,
+		dialog.fontStyle,
+		true,
+		false,
+		'center',
+		null,
+		null,
+		null,
+		new Color(255, 255, 255)
+	);
+	
+	dialog.labelString = 'Sichtbarkeit';
+    dialog.createLabel();
+    dialog.addBody(txt);
+    dialog.addButton( function () {Sichtbarkeit = 1; dialog.destroy();}, 'min');
+	dialog.addButton(	function () {Sichtbarkeit = 2; dialog.destroy();}, 'normal');
+	dialog.addButton(	function () {Sichtbarkeit = 3; dialog.destroy();}, 'max');
+	//dialog.addButton(	function () {alert(Sichtbarkeit);}, 'debug');
+    dialog.drawNew();
+    dialog.fixLayout();
+    dialog.popUp(world);
+	
+};
+
 
 // IDE_Morph cloud interface
 

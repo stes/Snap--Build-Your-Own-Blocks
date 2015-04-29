@@ -1642,7 +1642,7 @@ SpriteMorph.prototype.variableBlock = function (varName) {
 
 SpriteMorph.prototype.blockTemplates = function (category) {
     var blocks = [], myself = this, varNames, button,
-        cat = category || 'motion', txt;
+        cat = category || 'motion', txt, Full;
 
     function block(selector) {
         if (StageMorph.prototype.hiddenPrimitives[selector]) {
@@ -1718,60 +1718,28 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         }
     }
 
+	Full = DemoTest();
+	
+	Full[cat].forEach( function (element){
+		if (element[1] == 'Block') {
+			blocks.push(block(element[0]));
+		}	
+		else if(element[1] == 'watcher'){
+			blocks.push(watcherToggle(element[0]));
+			blocks.push(block(element[0]));
+		}
+		else if(element[1] == 'control') {
+			blocks.push(element[0]);
+		}
+	});
+	
+	
     if (cat === 'motion') {
 
-        blocks.push(block('forward'));
-        blocks.push(block('turn'));
-        blocks.push(block('turnLeft'));
-        blocks.push('-');
-        blocks.push(block('setHeading'));
-        blocks.push(block('doFaceTowards'));
-        blocks.push('-');
-        blocks.push(block('gotoXY'));
-        blocks.push(block('doGotoObject'));
-        blocks.push(block('doGlide'));
-        blocks.push('-');
-        blocks.push(block('changeXPosition'));
-        blocks.push(block('setXPosition'));
-        blocks.push(block('changeYPosition'));
-        blocks.push(block('setYPosition'));
-        blocks.push('-');
-        blocks.push(block('bounceOffEdge'));
-        blocks.push('-');
-        blocks.push(watcherToggle('xPosition'));
-        blocks.push(block('xPosition'));
-        blocks.push(watcherToggle('yPosition'));
-        blocks.push(block('yPosition'));
-        blocks.push(watcherToggle('direction'));
-        blocks.push(block('direction'));
-
+	
+	
+		
     } else if (cat === 'looks') {
-
-        blocks.push(block('doSwitchToCostume'));
-        blocks.push(block('doWearNextCostume'));
-        blocks.push(watcherToggle('getCostumeIdx'));
-        blocks.push(block('getCostumeIdx'));
-        blocks.push('-');
-        blocks.push(block('doSayFor'));
-        blocks.push(block('bubble'));
-        blocks.push(block('doThinkFor'));
-        blocks.push(block('doThink'));
-        blocks.push('-');
-        blocks.push(block('changeEffect'));
-        blocks.push(block('setEffect'));
-        blocks.push(block('clearEffects'));
-        blocks.push('-');
-        blocks.push(block('changeScale'));
-        blocks.push(block('setScale'));
-        blocks.push(watcherToggle('getScale'));
-        blocks.push(block('getScale'));
-        blocks.push('-');
-        blocks.push(block('show'));
-        blocks.push(block('hide'));
-        blocks.push('-');
-        blocks.push(block('comeToFront'));
-        blocks.push(block('goBack'));
-
     // for debugging: ///////////////
 
         if (this.world().isDevMode) {
@@ -1795,18 +1763,6 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 
     } else if (cat === 'sound') {
 
-        blocks.push(block('playSound'));
-        blocks.push(block('doPlaySoundUntilDone'));
-        blocks.push(block('doStopAllSounds'));
-        blocks.push('-');
-        blocks.push(block('doRest'));
-        blocks.push('-');
-        blocks.push(block('doPlayNote'));
-        blocks.push('-');
-        blocks.push(block('doChangeTempo'));
-        blocks.push(block('doSetTempo'));
-        blocks.push(watcherToggle('getTempo'));
-        blocks.push(block('getTempo'));
 
     // for debugging: ///////////////
 
@@ -1823,112 +1779,11 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         }
 
     } else if (cat === 'pen') {
-
-        blocks.push(block('clear'));
-        blocks.push('-');
-        blocks.push(block('down'));
-        blocks.push(block('up'));
-        blocks.push('-');
-        blocks.push(block('setColor'));
-        blocks.push(block('changeHue'));
-        blocks.push(block('setHue'));
-        blocks.push('-');
-        blocks.push(block('changeBrightness'));
-        blocks.push(block('setBrightness'));
-        blocks.push('-');
-        blocks.push(block('changeSize'));
-        blocks.push(block('setSize'));
-        blocks.push('-');
-        blocks.push(block('doStamp'));
-
+  
     } else if (cat === 'control') {
-
-        blocks.push(block('receiveGo'));
-        blocks.push(block('receiveKey'));
-        blocks.push(block('receiveInteraction'));
-        blocks.push(block('receiveMessage'));
-        blocks.push('-');
-        blocks.push(block('doBroadcast'));
-        blocks.push(block('doBroadcastAndWait'));
-        blocks.push(watcherToggle('getLastMessage'));
-        blocks.push(block('getLastMessage'));
-        blocks.push('-');
-        blocks.push(block('doWarp'));
-        blocks.push('-');
-        blocks.push(block('doWait'));
-        blocks.push(block('doWaitUntil'));
-        blocks.push('-');
-        blocks.push(block('doForever'));
-        blocks.push(block('doRepeat'));
-        blocks.push(block('doUntil'));
-        blocks.push('-');
-        blocks.push(block('doIf'));
-        blocks.push(block('doIfElse'));
-        blocks.push('-');
-        blocks.push(block('doReport'));
-        blocks.push('-');
-    /*
-    // old STOP variants, migrated to a newer version, now redundant
-        blocks.push(block('doStopBlock'));
-        blocks.push(block('doStop'));
-        blocks.push(block('doStopAll'));
-    */
-        blocks.push(block('doStopThis'));
-        blocks.push(block('doStopOthers'));
-        blocks.push('-');
-        blocks.push(block('doRun'));
-        blocks.push(block('fork'));
-        blocks.push(block('evaluate'));
-        blocks.push('-');
-    /*
-    // list variants commented out for now (redundant)
-        blocks.push(block('doRunWithInputList'));
-        blocks.push(block('forkWithInputList'));
-        blocks.push(block('evaluateWithInputList'));
-        blocks.push('-');
-    */
-        blocks.push(block('doCallCC'));
-        blocks.push(block('reportCallCC'));
-        blocks.push('-');
-        blocks.push(block('receiveOnClone'));
-        blocks.push(block('createClone'));
-        blocks.push(block('removeClone'));
-        blocks.push('-');
-        blocks.push(block('doPauseAll'));
-
+  
     } else if (cat === 'sensing') {
-
-        blocks.push(block('reportTouchingObject'));
-        blocks.push(block('reportTouchingColor'));
-        blocks.push(block('reportColorIsTouchingColor'));
-        blocks.push('-');
-        blocks.push(block('doAsk'));
-        blocks.push(watcherToggle('getLastAnswer'));
-        blocks.push(block('getLastAnswer'));
-        blocks.push('-');
-        blocks.push(watcherToggle('reportMouseX'));
-        blocks.push(block('reportMouseX'));
-        blocks.push(watcherToggle('reportMouseY'));
-        blocks.push(block('reportMouseY'));
-        blocks.push(block('reportMouseDown'));
-        blocks.push('-');
-        blocks.push(block('reportKeyPressed'));
-        blocks.push('-');
-        blocks.push(block('reportDistanceTo'));
-        blocks.push('-');
-        blocks.push(block('doResetTimer'));
-        blocks.push(watcherToggle('getTimer'));
-        blocks.push(block('getTimer'));
-        blocks.push('-');
-        blocks.push(block('reportAttributeOf'));
-        blocks.push('-');
-        blocks.push(block('reportURL'));
-        blocks.push('-');
-        blocks.push(block('reportIsFastTracking'));
-        blocks.push(block('doSetFastTracking'));
-        blocks.push('-');
-        blocks.push(block('reportDate'));
-
+      
     // for debugging: ///////////////
 
         if (this.world().isDevMode) {
@@ -1949,46 +1804,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         }
 
     } else if (cat === 'operators') {
-
-        blocks.push(block('reifyScript'));
-        blocks.push(block('reifyReporter'));
-        blocks.push(block('reifyPredicate'));
-        blocks.push('#');
-        blocks.push('-');
-        blocks.push(block('reportSum'));
-        blocks.push(block('reportDifference'));
-        blocks.push(block('reportProduct'));
-        blocks.push(block('reportQuotient'));
-        blocks.push('-');
-        blocks.push(block('reportModulus'));
-        blocks.push(block('reportRound'));
-        blocks.push(block('reportMonadic'));
-        blocks.push(block('reportRandom'));
-        blocks.push('-');
-        blocks.push(block('reportLessThan'));
-        blocks.push(block('reportEquals'));
-        blocks.push(block('reportGreaterThan'));
-        blocks.push('-');
-        blocks.push(block('reportAnd'));
-        blocks.push(block('reportOr'));
-        blocks.push(block('reportNot'));
-        blocks.push('-');
-        blocks.push(block('reportTrue'));
-        blocks.push(block('reportFalse'));
-        blocks.push('-');
-        blocks.push(block('reportJoinWords'));
-        blocks.push(block('reportTextSplit'));
-        blocks.push(block('reportLetter'));
-        blocks.push(block('reportStringSize'));
-        blocks.push('-');
-        blocks.push(block('reportUnicode'));
-        blocks.push(block('reportUnicodeAsLetter'));
-        blocks.push('-');
-        blocks.push(block('reportIsA'));
-        blocks.push(block('reportIsIdentical'));
-        blocks.push('-');
-        blocks.push(block('reportJSFunction'));
-
+        
     // for debugging: ///////////////
 
         if (this.world().isDevMode) {
@@ -2217,9 +2033,10 @@ SpriteMorph.prototype.freshPalette = function (category) {
                 );
             });
         }
-
+		alert("hallo");
         menu.addItem('find blocks...', function () {myself.searchBlocks(); });
         if (canHidePrimitives()) {
+			alert("hi");
             menu.addItem(
                 'hide primitives',
                 function () {

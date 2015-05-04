@@ -453,5 +453,22 @@
 	
 	// end initilise
 	
-	return starter ;//Full;
+	if (Sichtbarkeit == 1)
+	{
+		return starter;
+		}
+	if (Sichtbarkeit == 2)
+		{
+		return advanced;
+		}
+	if (Sichtbarkeit == 3)
+		{
+		return Full;
+		}
+	else
+		//Fallback option
+		{
+		return Full;
+		}
+
     }

@@ -1717,7 +1717,8 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             }
         }
     }
-
+	
+	//Worked here
 	Full = DemoTest();
 	
 	Full[cat].forEach( function (element){
@@ -1735,10 +1736,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 	
 	
     if (cat === 'motion') {
-
 	
-	
-		
     } else if (cat === 'looks') {
     // for debugging: ///////////////
 
@@ -2036,7 +2034,6 @@ SpriteMorph.prototype.freshPalette = function (category) {
 		alert("hallo");
         menu.addItem('find blocks...', function () {myself.searchBlocks(); });
         if (canHidePrimitives()) {
-			alert("hi");
             menu.addItem(
                 'hide primitives',
                 function () {
@@ -2082,7 +2079,7 @@ SpriteMorph.prototype.freshPalette = function (category) {
     if (!blocks) {
         blocks = myself.blockTemplates(category);
         if (this.isCachingPrimitives) {
-            myself.blocksCache[category] = blocks;
+			myself.blocksCache[category] = blocks;
         }
     }
 

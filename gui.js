@@ -69,7 +69,7 @@ SpeechBubbleMorph*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2015-March-15';
+modules.gui = '2015-February-28';
 
 // Declarations
 
@@ -82,7 +82,7 @@ var WardrobeMorph;
 var SoundIconMorph;
 var JukeboxMorph;
 //Worked here 
-var Sichtbarkeit;
+var Sichtbarkeit = 3;
 
 // IDE_Morph ///////////////////////////////////////////////////////////
 
@@ -2275,10 +2275,10 @@ IDE_Morph.prototype.settingsMenu = function () {
     addPreference(
         'Cache Inputs',
         function () {
-            BlockMorph.prototype.isCachingInputs =
-                !BlockMorph.prototype.isCachingInputs;
+            SyntaxElementMorph.prototype.isCachingInputs =
+                !SyntaxElementMorph.prototype.isCachingInputs;
         },
-        BlockMorph.prototype.isCachingInputs,
+        SyntaxElementMorph.prototype.isCachingInputs,
         'uncheck to stop caching\ninputs (for debugging the evaluator)',
         'check to cache inputs\nboosts recursion',
         true
@@ -2604,7 +2604,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Snap! 4.0\nBuild Your Own Blocks\n\n--- rc ---\n\n'
+    aboutTxt = 'Snap! 4.0\nBuild Your Own Blocks\n\n--- beta ---\n\n'
         + 'Copyright \u24B8 2015 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'
@@ -3794,13 +3794,14 @@ IDE_Morph.prototype.blub = function () {
 		new Color(255, 255, 255)
 	);
 	
+	here = this;
+	
 	dialog.labelString = 'Sichtbarkeit';
     dialog.createLabel();
     dialog.addBody(txt);
-    dialog.addButton( function () {Sichtbarkeit = 1; dialog.destroy();}, 'min');
-	dialog.addButton(	function () {Sichtbarkeit = 2; dialog.destroy();}, 'normal');
-	dialog.addButton(	function () {Sichtbarkeit = 3; dialog.destroy();}, 'max');
-	//dialog.addButton(	function () {alert(Sichtbarkeit);}, 'debug');
+    dialog.addButton( function () {Sichtbarkeit = 1; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'min');
+	dialog.addButton( function () {Sichtbarkeit = 2; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'normal');
+	dialog.addButton( function () {Sichtbarkeit = 3; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'max');
     dialog.drawNew();
     dialog.fixLayout();
     dialog.popUp(world);

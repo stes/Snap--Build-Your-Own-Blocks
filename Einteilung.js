@@ -1,5 +1,5 @@
   function DemoTest() {
-      	//all Blocks Visible
+    //all Blocks Visible
 	Full = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
 	advanced = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
 	starter = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
@@ -453,7 +453,19 @@
 	
 	// end initilise
 	
-	if (Sichtbarkeit == 1)
+	
+	//var Sichtbarkeit = {'motion': 3,'looks': 3, 'sound':3, 'pen':3, 'control':3, 'sensing':3, 'operators':3, 'variables':3};
+	
+	Data = {'1': starter, '2': advanced, '3': Full};
+	returnData = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
+	
+	for (key in Sichtbarkeit){
+		//alert('Sichtbarkeit[key] ' + Sichtbarkeit[key]);
+		//alert(Data[2]);
+		returnData[key] = Data[Sichtbarkeit[key]][key];
+	}	
+	
+/*	if (Sichtbarkeit == 1)
 	{
 		return starter;
 		}
@@ -465,10 +477,6 @@
 		{
 		return Full;
 		}
-	else
-		//Fallback option
-		{
-		return Full;
-		}
-
+*/
+	return returnData;
     }

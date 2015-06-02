@@ -82,7 +82,8 @@ var WardrobeMorph;
 var SoundIconMorph;
 var JukeboxMorph;
 //Worked here 
-var Sichtbarkeit = 3;
+//var Sichtbarkeit = 3;
+var Sichtbarkeit = {'motion': 3,'looks': 3, 'sound':3, 'pen':3, 'control':3, 'sensing':3, 'operators':3, 'variables':3};
 
 // IDE_Morph ///////////////////////////////////////////////////////////
 
@@ -3769,39 +3770,328 @@ IDE_Morph.prototype.setStageExtent = function (aPoint) {
 
 IDE_Morph.prototype.blub = function () {
  	//worldCanvas = new WorldMorph(document.getElementById('world'));
-	
-	var dialog = new DialogBoxMorph().withKey('dialogKey'),
-		//frame = new ScrollFrameMorph(),
-		//text = new TextMorph('Test Dialog'),
-        //ok = dialog.ok,
-        //myself = this,
-        //size = 550,
-        world = this.world();
-	
+	if (dialog)
+		dialog = null;
+	var dialog = new DialogBoxMorph().withKey('Sichtbarkeit'),
+        world = this.world(),
+		distance = 50,
+		myself = this,
+		here = this,
+		localSichtbarkeit = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
+		Buttons = {'motion': [],'looks': [], 'sound':[], 'pen':[], 'control':[], 'sensing':[], 'operators':[], 'variables':[]};
+		
+		coppy(localSichtbarkeit, Sichtbarkeit);
+		
+		//alert(localSichtbarkeit["motion"] + " " + localSichtbarkeit["looks"] + " " + localSichtbarkeit["sound"] + " " + localSichtbarkeit["pen"] );
+		
 	//add dialog to our world (or another Morph)
+	dialog.init();
 	world.add(dialog);
 	
-	var txt = new TextMorph(
-		'wählen Sie das Sichtbarkeitslevel aus ',
-		10,
-		dialog.fontStyle,
-		true,
-		false,
-		'center',
-		null,
-		null,
-		null,
-		new Color(255, 255, 255)
-	);
 	
-	here = this;
+	//erstelle Body 
+	body = new Morph();
+	//body.silentSetWidth(900);	
+	//body.setPosition(new Point(-100,-100));
+	body.setExtent(new Point(450, 350));
+	body.color = new Color(200,200,200);
 	
+	//Beschriftungstext
+	txt = addLabel("Wählen Sie das Sichbarkeitslevel aus", new Color(255,255,255), 15);
+	txt.setPosition(new Point(75,10));
+	body.add(txt);
+
+	function coppy(outArr, inArr ) {
+	
+	for(var key in inArr){
+		outArr[key] = inArr[key];
+	}
+	
+	}
+	
+	function addToggleButton(action, query, label, key, lvl){
+		var mycolors = [
+                myself.frameColor,
+                myself.frameColor.darker(50),
+                SpriteMorph.prototype.blockColor[key]
+            ],
+			button = new ToggleButtonMorph(//PushButtonMorph
+			mycolors, 
+			dialog,
+			action,
+			'  ' + localize((label)) + '  ',
+			query,
+			null,
+			null,
+			null,
+			75,
+			true
+		);
+		button.corner = 8;
+        button.padding = 0;
+        button.labelShadowOffset = new Point(-1, -1);
+        button.labelShadowColor = mycolors[1];
+        button.labelColor = myself.buttonLabelColor;
+		button.drawNew();
+		button.fixLayout();	
+		body.add(button);
+		return button;
+	};
+	
+	function addButton(action, label) {
+		var button = new PushButtonMorph(
+			dialog,
+			action || 'ok',
+			'  ' + localize((label || 'OK')) + '  '
+		);
+		button.fontSize = dialog.buttonFontSize;
+		button.corner = dialog.buttonCorner;
+		button.edge = dialog.buttonEdge;
+		button.outline = dialog.buttonOutline;
+		button.outlineColor = dialog.buttonOutlineColor;
+		button.outlineGradient = dialog.buttonOutlineGradient;
+		button.padding = dialog.buttonPadding;
+		button.contrast = dialog.buttonContrast;
+		button.drawNew();
+		button.fixLayout();
+		dialog.buttons.add(button);
+		body.add(button);
+		return button;
+	};
+	
+	function addLabel(text, color, size){
+		var txt = new StringMorph(
+			text,	//text
+			size,
+			dialog.fontStyle,
+			true,
+			false,
+			false,
+			null,
+			null,
+			color
+			);
+		body.add(txt);
+		return txt;
+	};	
+
+	function initialiseSelection(){
+		for (var key in Buttons) {
+			//alert(localSichtbarkeit[key]-1);
+			Buttons[key][localSichtbarkeit[key]-1].trigger();
+			//Buttons[key][localSichtbarkeit[key]-1].state = true;
+			//Buttons[key][localSichtbarkeit[key]-1].fixLayout();
+			for (var i=0 ;i <=2;i++ ){
+				if (i !== localSichtbarkeit[key]-1){
+					Buttons[key][i].state = false;
+					Buttons[key][i].fixLayout();
+				}
+			}			
+		} 	
+	}	
+	
+	function buttonMotion1 () {buttonClick('motion', 1)};
+	function buttonMotion2 () {buttonClick('motion', 2)};
+	function buttonMotion3 () {buttonClick('motion', 3)};
+	function buttonLooks1 () {buttonClick('looks', 1)};
+	function buttonLooks2 () {buttonClick('looks', 2)};
+	function buttonLooks3 () {buttonClick('looks', 3)};
+	function buttonSound1 () {buttonClick('sound', 1)};
+	function buttonSound2 () {buttonClick('sound', 2)};
+	function buttonSound3 () {buttonClick('sound', 3)};
+	function buttonPen1 () {buttonClick('pen', 1)};
+	function buttonPen2 () {buttonClick('pen', 2)};
+	function buttonPen3 () {buttonClick('pen', 3)};
+	function buttonControl1 () {buttonClick('control', 1)};
+	function buttonControl2 () {buttonClick('control', 2)};
+	function buttonControl3 () {buttonClick('control', 3)};
+	function buttonSensing1 () {buttonClick('sensing', 1)};
+	function buttonSensing2 () {buttonClick('sensing', 2)};
+	function buttonSensing3 () {buttonClick('sensing', 3)};
+	function buttonOperators1 () {buttonClick('operators', 1)};
+	function buttonOperators2 () {buttonClick('operators', 2)};
+	function buttonOperators3 () {buttonClick('operators', 3)};
+	function buttonVariables1 () {buttonClick('variables', 1)};
+	function buttonVariables2 () {buttonClick('variables', 2)};
+	function buttonVariables3 () {buttonClick('variables', 3)};
+	
+	function queryMotion1 () {return buttonQuary('motion', 1)};
+	function queryMotion2 () {return buttonQuary('motion', 2)};
+	function queryMotion3 () {return buttonQuary('motion', 3)};
+	function queryLooks1 () {return buttonQuary('looks', 1)};
+	function queryLooks2 () {return buttonQuary('looks', 2)};
+	function queryLooks3 () {return buttonQuary('looks', 3)};
+	function querySound1 () {return buttonQuary('sound', 1)};
+	function querySound2 () {return buttonQuary('sound', 2)};
+	function querySound3 () {return buttonQuary('sound', 3)};
+	function queryPen1 () {return buttonQuary('pen', 1)};
+	function queryPen2 () {return buttonQuary('pen', 2)};
+	function queryPen3 () {return buttonQuary('pen', 3)};
+	function queryControl1 () {return buttonQuary('control', 1)};
+	function queryControl2 () {return buttonQuary('control', 2)};
+	function queryControl3 () {return buttonQuary('control', 3)};
+	function querySensing1 () {return buttonQuary('sensing', 1)};
+	function querySensing2 () {return buttonQuary('sensing', 2)};
+	function querySensing3 () {return buttonQuary('sensing', 3)};
+	function queryOperators1 () {return buttonQuary('operators', 1)};
+	function queryOperators2 () {return buttonQuary('operators', 2)};
+	function queryOperators3 () {return buttonQuary('operators', 3)};
+	function queryVariables1 () {return buttonQuary('variables', 1)};
+	function queryVariables2 () {return buttonQuary('variables', 2)};
+	function queryVariables3 () {return buttonQuary('variables', 3)};
+	
+	
+	function buttonClick(key, value){
+		//alert("i am " + key + " " + value );
+		localSichtbarkeit[key] = value;	
+		for (var i=0 ;i <=2;i++ ){
+			if (i !== value-1){
+				Buttons[key][i].state = false;
+				Buttons[key][i].fixLayout();
+			}
+		}
+	};
+	
+	function buttonQuary(key, value){
+		/*this.Buttons[key][0].state = false;
+		this.Buttons[key][1].state = false;
+		this.Buttons[key][2].state = false;	*/	
+		return true;
+	};
+	
+	
+	// display dialog name
 	dialog.labelString = 'Sichtbarkeit';
     dialog.createLabel();
-    dialog.addBody(txt);
-    dialog.addButton( function () {Sichtbarkeit = 1; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'min');
-	dialog.addButton( function () {Sichtbarkeit = 2; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'normal');
-	dialog.addButton( function () {Sichtbarkeit = 3; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();}, 'max');
+	
+	//create all the buttons on the body	
+
+	//motion
+	txt = addLabel('motion' + ":", SpriteMorph.prototype.blockColor['motion'], 12);	
+	B1 = addToggleButton( buttonMotion1, queryMotion1, 'min', 'motion', 1);
+	B2 = addToggleButton( buttonMotion2, queryMotion2, 'normal', 'motion', 2);
+	B3 = addToggleButton( buttonMotion3, queryMotion3, 'max', 'motion', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['motion'] = [B1, B2, B3];
+	
+	//Looks
+	txt = addLabel('looks' + ":", SpriteMorph.prototype.blockColor['looks'], 12);	
+	B1 = addToggleButton( buttonLooks1, queryLooks1, 'min', 'looks', 1);
+	B2 = addToggleButton( buttonLooks2, queryLooks2, 'normal', 'looks', 2);
+	B3 = addToggleButton( buttonLooks3, queryLooks3, 'max', 'looks', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['looks'] = [B1, B2, B3];
+	
+	//Sound
+	txt = addLabel('sound' + ":", SpriteMorph.prototype.blockColor['sound'], 12);	
+	B1 = addToggleButton( buttonSound1, querySound1, 'min', 'sound', 1);
+	B2 = addToggleButton( buttonSound2, querySound2, 'normal', 'sound', 2);
+	B3 = addToggleButton( buttonSound3, querySound3, 'max', 'sound', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['sound'] = [B1, B2, B3];
+	
+	//Pen
+	txt = addLabel('pen' + ":", SpriteMorph.prototype.blockColor['pen'], 12);	
+	B1 = addToggleButton( buttonPen1, queryPen1, 'min', 'pen', 1);
+	B2 = addToggleButton( buttonPen2, queryPen2, 'normal', 'pen', 2);
+	B3 = addToggleButton( buttonPen3, queryPen3, 'max', 'pen', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['pen'] = [B1, B2, B3];
+	
+	//Control
+	txt = addLabel('control' + ":", SpriteMorph.prototype.blockColor['control'], 12);	
+	B1 = addToggleButton( buttonControl1, queryControl1, 'min', 'control', 1);
+	B2 = addToggleButton( buttonControl2, queryControl2, 'normal', 'control', 2);
+	B3 = addToggleButton( buttonControl3, queryControl3, 'max', 'control', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['control'] = [B1, B2, B3];
+	
+	//Sensing
+	txt = addLabel('sensing' + ":", SpriteMorph.prototype.blockColor['sensing'], 12);	
+	B1 = addToggleButton( buttonSensing1, querySensing1, 'min', 'sensing', 1);
+	B2 = addToggleButton( buttonSensing2, querySensing2, 'normal', 'sensing', 2);
+	B3 = addToggleButton( buttonSensing3, querySensing3, 'max', 'sensing', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['sensing'] = [B1, B2, B3];
+	
+	//Operators
+	txt = addLabel('operators' + ":", SpriteMorph.prototype.blockColor['operators'], 12);	
+	B1 = addToggleButton( buttonOperators1, queryOperators1, 'min', 'operators', 1);
+	B2 = addToggleButton( buttonOperators2, queryOperators2, 'normal', 'operators', 2);
+	B3 = addToggleButton( buttonOperators3, queryOperators3, 'max', 'operators', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['operators'] = [B1, B2, B3];
+	
+	//Variables
+	txt = addLabel('variables' + ":", SpriteMorph.prototype.blockColor['variables'], 12);	
+	B1 = addToggleButton( buttonVariables1, queryVariables1, 'min', 'variables', 1);
+	B2 = addToggleButton( buttonVariables2, queryVariables2, 'normal', 'variables', 2);
+	B3 = addToggleButton( buttonVariables3, queryVariables3, 'max', 'variables', 3);
+
+	txt.setPosition(new Point(50,distance));
+	B1.setPosition(new Point(150,distance));
+	B2.setPosition(new Point(250,distance));
+	B3.setPosition(new Point(350,distance));
+					
+	distance = distance + 30;
+	Buttons['variables'] = [B1, B2, B3];
+	
+	
+	//select buttons that represent Sichtbarkeits levels
+	initialiseSelection();
+	
+	//OK Button
+	but = addButton(function(){Sichtbarkeit = localSichtbarkeit; dialog.destroy(); here.flushBlocksCache(); here.refreshPalette();},"OK");	// hier Einstellung übernehmen
+	but.setPosition(new Point(250, distance + 20));
+	
+	//cancel button
+	but = addButton(function(){dialog.destroy();},"Cancel");	// hier Einstellung verwerfen
+	but.setPosition(new Point(150, distance + 20));
+	
+	//add body to dialog and shiw it
+	dialog.addBody(body);	
     dialog.drawNew();
     dialog.fixLayout();
     dialog.popUp(world);
